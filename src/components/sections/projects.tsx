@@ -45,39 +45,44 @@ const accentMap: Record<
   }
 > = {
   emerald: {
-    text: "text-emerald-400",
-    bg: "bg-emerald-400/10",
-    border: "border-emerald-400/30",
+    // Darker shades for light-mode visibility; bright shades in dark mode
+    text: "text-emerald-700 dark:text-emerald-400",
+    bg: "bg-emerald-600/10 dark:bg-emerald-400/10",
+    border: "border-emerald-600/30 dark:border-emerald-400/30",
     glow: "group-hover:shadow-[0_20px_60px_-20px_rgba(16,185,129,0.5)]",
-    chip: "bg-emerald-400/10 text-emerald-300 ring-emerald-400/20",
-    dot: "bg-emerald-400",
+    chip:
+      "bg-emerald-600/10 text-emerald-700 ring-emerald-600/20 dark:bg-emerald-400/10 dark:text-emerald-300 dark:ring-emerald-400/20",
+    dot: "bg-emerald-600 dark:bg-emerald-400",
     grad: "from-emerald-500/20 via-emerald-400/5 to-transparent",
   },
   amber: {
-    text: "text-amber-400",
-    bg: "bg-amber-400/10",
-    border: "border-amber-400/30",
+    text: "text-amber-700 dark:text-amber-400",
+    bg: "bg-amber-600/10 dark:bg-amber-400/10",
+    border: "border-amber-600/30 dark:border-amber-400/30",
     glow: "group-hover:shadow-[0_20px_60px_-20px_rgba(245,158,11,0.5)]",
-    chip: "bg-amber-400/10 text-amber-300 ring-amber-400/20",
-    dot: "bg-amber-400",
+    chip:
+      "bg-amber-600/10 text-amber-700 ring-amber-600/20 dark:bg-amber-400/10 dark:text-amber-300 dark:ring-amber-400/20",
+    dot: "bg-amber-600 dark:bg-amber-400",
     grad: "from-amber-500/20 via-amber-400/5 to-transparent",
   },
   pink: {
-    text: "text-pink-400",
-    bg: "bg-pink-400/10",
-    border: "border-pink-400/30",
+    text: "text-pink-700 dark:text-pink-400",
+    bg: "bg-pink-600/10 dark:bg-pink-400/10",
+    border: "border-pink-600/30 dark:border-pink-400/30",
     glow: "group-hover:shadow-[0_20px_60px_-20px_rgba(236,72,153,0.5)]",
-    chip: "bg-pink-400/10 text-pink-300 ring-pink-400/20",
-    dot: "bg-pink-400",
+    chip:
+      "bg-pink-600/10 text-pink-700 ring-pink-600/20 dark:bg-pink-400/10 dark:text-pink-300 dark:ring-pink-400/20",
+    dot: "bg-pink-600 dark:bg-pink-400",
     grad: "from-pink-500/20 via-pink-400/5 to-transparent",
   },
   teal: {
-    text: "text-teal-400",
-    bg: "bg-teal-400/10",
-    border: "border-teal-400/30",
+    text: "text-teal-700 dark:text-teal-400",
+    bg: "bg-teal-600/10 dark:bg-teal-400/10",
+    border: "border-teal-600/30 dark:border-teal-400/30",
     glow: "group-hover:shadow-[0_20px_60px_-20px_rgba(20,184,166,0.5)]",
-    chip: "bg-teal-400/10 text-teal-300 ring-teal-400/20",
-    dot: "bg-teal-400",
+    chip:
+      "bg-teal-600/10 text-teal-700 ring-teal-600/20 dark:bg-teal-400/10 dark:text-teal-300 dark:ring-teal-400/20",
+    dot: "bg-teal-600 dark:bg-teal-400",
     grad: "from-teal-500/20 via-teal-400/5 to-transparent",
   },
 };
@@ -277,7 +282,7 @@ function OtherRepos() {
                   <span className="font-mono">{repo.year}</span>
                   {repo.stars > 0 && (
                     <span className="inline-flex items-center gap-1">
-                      <Star className="h-3 w-3 text-amber-400" />
+                      <Star className="h-3 w-3 text-amber-600 dark:text-amber-400" />
                       {repo.stars}
                     </span>
                   )}
@@ -341,8 +346,8 @@ function ProjectCard({ project }: { project: Project }) {
               {project.title.charAt(0)}
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-amber-300 ring-1 ring-amber-400/20">
-                <Star className="h-3 w-3 fill-amber-300" /> Featured
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-600/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-amber-700 ring-1 ring-amber-600/20 dark:bg-amber-400/10 dark:text-amber-300 dark:ring-amber-400/20">
+                <Star className="h-3 w-3 fill-amber-600 dark:fill-amber-300" /> Featured
               </span>
               <span className="font-mono text-xs text-muted-foreground">
                 {project.year}
