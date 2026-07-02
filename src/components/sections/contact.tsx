@@ -9,6 +9,7 @@ import {
   Mail,
   Github,
   Twitter,
+  Linkedin,
   MapPin,
   Send,
   Loader2,
@@ -51,6 +52,13 @@ const contactItems = [
     value: `@${profile.githubUsername}`,
     href: profile.githubUrl,
     color: "text-amber-400",
+  },
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    value: "in/kashyap-p",
+    href: profile.linkedinUrl,
+    color: "text-sky-400",
   },
   {
     icon: Twitter,

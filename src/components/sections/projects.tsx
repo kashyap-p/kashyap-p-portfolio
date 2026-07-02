@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { motion } from "framer-motion";
 import {
   ExternalLink,
@@ -7,13 +8,29 @@ import {
   Star,
   ArrowUpRight,
   CheckCircle2,
+  RefreshCw,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { TiltCard } from "@/components/tilt-card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { projects, otherRepos, type Project } from "@/lib/portfolio-data";
+import { projects, type Project } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
+
+type ApiRepo = {
+  name: string;
+  title: string;
+  description: string;
+  language: string | null;
+  repoUrl: string;
+  liveUrl?: string;
+  year: string;
+  stars: number;
+  forks: number;
+  updatedAt: string;
+};
 
 const accentMap: Record<
   Project["accent"],
@@ -76,98 +93,212 @@ export function Projects() {
         />
 
         {/* Featured project cards */}
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
           {projects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
 
-        {/* More on GitHub */}
-        <div className="mt-20">
-          <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
-            <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs font-medium uppercase tracking-[0.2em] text-primary">
-                <Github className="h-3.5 w-3.5" />
-                More on GitHub
-              </span>
-              <h3 className="mt-3 font-display text-2xl font-bold sm:text-3xl">
-                Other repositories
-              </h3>
-              <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-                The rest of my open-source work — full-stack platforms, legacy
-                builds and small utilities. All live on{" "}
-                <a
-                  href="https://github.com/kashyap-p"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium text-primary hover:underline"
-                >
-                  github.com/kashyap-p
-                </a>
-                .
-              </p>
-            </div>
-            <Button asChild variant="outline" size="sm" className="shrink-0">
-              <a
-                href="https://github.com/kashyap-p"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Github className="mr-2 h-4 w-4" />
-                View all repos
-                <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
-              </a>
-            </Button>
-          </div>
-
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2">
-            {otherRepos.map((repo, i) => (
-              <motion.a
-                key={repo.name}
-                href={repo.repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="group flex items-start gap-4 rounded-2xl border border-border/60 bg-card/40 p-4 backdrop-blur transition-colors hover:border-primary/40 hover:bg-primary/5"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
-                  <Github className="h-5 w-5" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center justify-between gap-2">
-                    <h4 className="truncate font-display text-base font-semibold">
-                      {repo.title}
-                    </h4>
-                    <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </div>
-                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                    {repo.description}
-                  </p>
-                  <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
-                    {repo.language && (
-                      <span className="inline-flex items-center gap-1">
-                        <span className="h-2 w-2 rounded-full bg-accent" />
-                        {repo.language}
-                      </span>
-                    )}
-                    <span className="font-mono">{repo.year}</span>
-                    {repo.liveUrl && (
-                      <span className="inline-flex items-center gap-1 text-primary">
-                        <ExternalLink className="h-3 w-3" />
-                        Live demo
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </motion.a>
-            ))}
-          </div>
-        </div>
+        {/* More on GitHub (dynamic) */}
+        <OtherRepos />
       </div>
     </section>
+  );
+}
+
+function OtherRepos() {
+  const [repos, setRepos] = React.useState<ApiRepo[]>([]);
+  const [status, setStatus] = React.useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [error, setError] = React.useState<string>("");
+  const [lastUpdated, setLastUpdated] = React.useState<number | null>(null);
+
+  const fetchRepos = React.useCallback(async () => {
+    setStatus((s) => (s === "idle" ? "loading" : "loading"));
+    setError("");
+    try {
+      const res = await fetch("/api/github", { cache: "no-store" });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || "Failed to load repositories");
+      }
+      setRepos(data.repos as ApiRepo[]);
+      setLastUpdated(data.fetchedAt ?? Date.now());
+      setStatus("success");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+      setStatus("error");
+    }
+  }, []);
+
+  // Fetch on mount
+  React.useEffect(() => {
+    fetchRepos();
+  }, [fetchRepos]);
+
+  const lastUpdatedLabel = React.useMemo(() => {
+    if (!lastUpdated) return null;
+    const diff = Math.max(0, Date.now() - lastUpdated);
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return "just now";
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    return `${hrs}h ago`;
+  }, [lastUpdated]);
+
+  return (
+    <div className="mt-20">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+        <div>
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs font-medium uppercase tracking-[0.2em] text-primary">
+            <Github className="h-3.5 w-3.5" />
+            More on GitHub
+          </span>
+          <h3 className="mt-3 font-display text-2xl font-bold sm:text-3xl">
+            Other repositories
+          </h3>
+          <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+            Live from{" "}
+            <a
+              href="https://github.com/kashyap-p"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary hover:underline"
+            >
+              github.com/kashyap-p
+            </a>{" "}
+            — auto-syncs when you add or remove a repo.
+            {status === "success" && lastUpdatedLabel && (
+              <span className="ml-1 text-xs">
+                (updated {lastUpdatedLabel})
+              </span>
+            )}
+          </p>
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchRepos}
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <RefreshCw className="mr-2 h-4 w-4" />
+            )}
+            Refresh
+          </Button>
+          <Button asChild variant="ghost" size="sm">
+            <a
+              href="https://github.com/kashyap-p"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Github className="mr-1.5 h-4 w-4" />
+              All repos
+              <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
+            </a>
+          </Button>
+        </div>
+      </div>
+
+      {/* States */}
+      {status === "loading" && repos.length === 0 && (
+        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex animate-pulse items-start gap-4 rounded-2xl border border-border/60 bg-card/30 p-4"
+            >
+              <div className="h-10 w-10 shrink-0 rounded-xl bg-muted" />
+              <div className="flex-1 space-y-2">
+                <div className="h-4 w-2/3 rounded bg-muted" />
+                <div className="h-3 w-full rounded bg-muted/70" />
+                <div className="h-3 w-1/3 rounded bg-muted/50" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {status === "error" && repos.length === 0 && (
+        <div className="mt-8 flex flex-col items-center gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 p-8 text-center">
+          <AlertCircle className="h-8 w-8 text-destructive" />
+          <div>
+            <p className="font-medium">Couldn&apos;t load repositories</p>
+            <p className="mt-1 text-sm text-muted-foreground">{error}</p>
+          </div>
+          <Button variant="outline" size="sm" onClick={fetchRepos}>
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Try again
+          </Button>
+        </div>
+      )}
+
+      {repos.length > 0 && (
+        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {repos.map((repo, i) => (
+            <motion.a
+              key={repo.name}
+              href={repo.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.4, delay: Math.min(i * 0.04, 0.4) }}
+              className="group flex items-start gap-4 rounded-2xl border border-border/60 bg-card/40 p-4 backdrop-blur transition-colors hover:border-primary/40 hover:bg-primary/5"
+            >
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                <Github className="h-5 w-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2">
+                  <h4 className="truncate font-display text-base font-semibold">
+                    {repo.title}
+                  </h4>
+                  <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </div>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                  {repo.description}
+                </p>
+                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                  {repo.language && (
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2 w-2 rounded-full bg-accent" />
+                      {repo.language}
+                    </span>
+                  )}
+                  <span className="font-mono">{repo.year}</span>
+                  {repo.stars > 0 && (
+                    <span className="inline-flex items-center gap-1">
+                      <Star className="h-3 w-3 text-amber-400" />
+                      {repo.stars}
+                    </span>
+                  )}
+                  {repo.liveUrl && (
+                    <span className="inline-flex items-center gap-1 text-primary">
+                      <ExternalLink className="h-3 w-3" />
+                      Live demo
+                    </span>
+                  )}
+                </div>
+              </div>
+            </motion.a>
+          ))}
+        </div>
+      )}
+
+      {/* Live empty state — repo list legitimately empty on GitHub */}
+      {status === "success" && repos.length === 0 && (
+        <div className="mt-8 rounded-2xl border border-dashed border-border/60 bg-card/30 p-8 text-center text-sm text-muted-foreground">
+          No additional public repositories found. New repos will appear here
+          automatically.
+        </div>
+      )}
+    </div>
   );
 }
 

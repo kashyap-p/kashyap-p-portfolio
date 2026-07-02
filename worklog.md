@@ -115,3 +115,57 @@ Stage Summary:
 - Projects section now shows only the 4 requested projects as featured cards
 - All other repositories (8) listed as compact GitHub-linked cards in a "More on GitHub" subsection
 - All 12 repos from github.com/kashyap-p are represented (4 cards + 8 list items)
+
+---
+Task ID: 5
+Agent: main
+Task: Add LinkedIn social handle, mobile responsiveness, dynamic GitHub repo sync
+
+Work Log:
+1) LinkedIn integration
+- Added profile.linkedinUrl = "https://www.linkedin.com/in/kashyap-p" to portfolio-data
+- Added LinkedIn icon buttons in: Navbar (desktop + mobile sheet menu), Hero (social row), About (social links grid), Contact (contact items list), Footer (social icons)
+- Total 5 LinkedIn links verified across the site
+
+2) Dynamic GitHub repo sync (NEW FEATURE)
+- Created src/app/api/github/route.ts:
+  - GET fetches repos live from api.github.com/users/kashyap-p/repos (per_page=100, sort=updated)
+  - Filters out forks, archived, non-public, and the 4 featured repo names (claimsight, weather-tracker, tech-news, todo-app)
+  - Maps to clean summary: name, humanized title, description, language, repoUrl, liveUrl (from homepage), year, stars, forks, updatedAt
+  - Title humanization with overrides for known repos (Wanderlust, Task Management, IMDB Clone, Alarm Clock, etc.)
+  - In-memory cache: 10-minute TTL to respect GitHub's 60 req/hour unauth rate limit
+  - Graceful fallback: serves stale cache if GitHub API fails
+  - Sets Cache-Control: s-maxage=600, stale-while-revalidate=1200
+- Rewrote Projects "Other repositories" section as OtherRepos() component:
+  - Fetches from /api/github on mount via useEffect
+  - Loading state: 6 skeleton placeholder cards (animate-pulse)
+  - Error state: red alert card with "Try again" button
+  - Success state: live repo cards in responsive grid, each with GitHub icon, title, description, language dot, year, star count, live-demo indicator
+  - Empty state: dashed-border "No additional public repositories found"
+  - "Refresh" button to re-fetch on demand (with spinner when loading)
+  - "Last updated X ago" timestamp display
+  - Removed the static otherRepos array from portfolio-data.ts (no longer needed)
+- Result: When user adds/deletes a repo on GitHub, it auto-reflects on the site (after ≤10 min cache, or instantly via Refresh button)
+
+3) Mobile responsiveness improvements
+- Hero CTA row: grouped social icons into a tighter cluster (h-10 w-10 on mobile, h-11 w-11 on sm+), reduced gap to gap-2 on mobile
+- About social links: changed to 2-col grid (GitHub + LinkedIn) with Twitter spanning full width
+- Navbar mobile Sheet menu: 2-col grid for GitHub + LinkedIn, Twitter full width
+- All sections already use responsive grids (single col mobile → 2 col sm/md)
+
+Verification (Agent Browser + VLM):
+- LinkedIn: 5 links found across page (navbar, hero, about, contact, footer) + mobile menu
+- /api/github: returns 200 with 8 live repos (Kashyap Portfolio, GitHub Profile README, 3D Portfolio, Wanderlust, Portfolio legacy, Task Management, IMDB Clone, Alarm Clock)
+- Projects section: 4 featured cards (ClaimSight, Weather Tracker, Tech News, Todo App) + 8 dynamic repo cards with "updated just now" timestamp + Refresh button
+- Refresh button: clicked → repos re-fetched, timestamp updated to "just now", all 8 repos still present
+- Mobile (390px): hero buttons + social icons all visible, no horizontal overflow; featured cards single-column readable; Other repositories section shows heading + auto-sync description + Refresh button + single-column repo cards, no overflow; mobile hamburger menu includes LinkedIn
+- Desktop: full 2-column layout, all features working
+- Console: no runtime errors
+- Lint: clean (eslint . passes)
+- dev.log: healthy, /api/github responding in 3-8ms from cache
+
+Stage Summary:
+- LinkedIn (linkedin.com/in/kashyap-p) added everywhere socials appear (5 locations)
+- "Other repositories" now LIVE-syncs from GitHub API — add/delete a repo on GitHub and it reflects on the site within 10 minutes (or instantly via Refresh button)
+- Mobile fully responsive across hero, about, projects (featured + dynamic), contact, footer
+- 4 featured cards unchanged; 8 dynamic repos replacing the old static list

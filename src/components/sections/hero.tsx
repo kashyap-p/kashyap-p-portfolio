@@ -6,6 +6,7 @@ import {
   ArrowDown,
   Github,
   Twitter,
+  Linkedin,
   Sparkles,
   Code2,
   Boxes,
@@ -93,7 +94,7 @@ export function Hero() {
 
           <motion.div
             variants={item}
-            className="mt-8 flex flex-wrap items-center gap-3"
+            className="mt-8 flex flex-wrap items-center gap-2 sm:gap-3"
           >
             <Button asChild size="lg" className="group glow-emerald">
               <a href="#projects">
@@ -112,26 +113,38 @@ export function Hero() {
                 Get in Touch
               </a>
             </Button>
-            <Button asChild size="lg" variant="ghost">
-              <a
-                href={profile.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub profile"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-            </Button>
-            <Button asChild size="lg" variant="ghost">
-              <a
-                href={profile.twitterUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter profile"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-            </Button>
+            <span className="flex items-center gap-1">
+              <Button asChild size="icon" variant="ghost" className="h-10 w-10 sm:h-11 sm:w-11">
+                <a
+                  href={profile.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub profile"
+                >
+                  <Github className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button asChild size="icon" variant="ghost" className="h-10 w-10 sm:h-11 sm:w-11">
+                <a
+                  href={profile.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn profile"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button asChild size="icon" variant="ghost" className="h-10 w-10 sm:h-11 sm:w-11">
+                <a
+                  href={profile.twitterUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Twitter profile"
+                >
+                  <Twitter className="h-5 w-5" />
+                </a>
+              </Button>
+            </span>
           </motion.div>
 
           {/* Inline stats */}

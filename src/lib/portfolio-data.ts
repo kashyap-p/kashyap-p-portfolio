@@ -12,6 +12,7 @@ export const profile = {
   githubUrl: "https://github.com/kashyap-p",
   twitter: "Kashyap_0702",
   twitterUrl: "https://twitter.com/Kashyap_0702",
+  linkedinUrl: "https://www.linkedin.com/in/kashyap-p",
   avatarUrl: "https://avatars.githubusercontent.com/u/43714430?v=4",
   email: "kashyappatel326@gmail.com",
   // Live GitHub stats (snapshot from api.github.com)
@@ -140,90 +141,9 @@ export const projects: Project[] = [
   },
 ];
 
-// Remaining repositories from github.com/kashyap-p — shown as a compact list
-export type OtherRepo = {
-  name: string;
-  title: string;
-  description: string;
-  language: string | null;
-  repoUrl: string;
-  liveUrl?: string;
-  year: string;
-};
-
-export const otherRepos: OtherRepo[] = [
-  {
-    name: "Wanderlust---Nodejs-Project",
-    title: "Wanderlust",
-    description:
-      "Full-stack travel listings platform — Node.js, Express, MongoDB with auth, map & image uploads.",
-    language: "JavaScript",
-    repoUrl: "https://github.com/kashyap-p/Wanderlust---Nodejs-Project",
-    liveUrl: "https://wanderlust-nodejs-project.onrender.com/listings",
-    year: "2024",
-  },
-  {
-    name: "kashyap-portfolio",
-    title: "Kashyap Portfolio",
-    description:
-      "Next.js 16 portfolio with live GitHub stats — no third-party image dependencies.",
-    language: "TypeScript",
-    repoUrl: "https://github.com/kashyap-p/kashyap-portfolio",
-    liveUrl: "https://kashyap-port-folio.vercel.app/",
-    year: "2026",
-  },
-  {
-    name: "portfolioNEW",
-    title: "3D Portfolio",
-    description:
-      "Immersive 3D portfolio — React 18, Three.js (React Three Fiber) and Vite.",
-    language: "JavaScript",
-    repoUrl: "https://github.com/kashyap-p/portfolioNEW",
-    liveUrl: "https://kashyap-p.github.io/portfolioNEW/",
-    year: "2026",
-  },
-  {
-    name: "React-task-management",
-    title: "Task Management",
-    description:
-      "React task management app with priority lists — organize work by priority & status.",
-    language: "JavaScript",
-    repoUrl: "https://github.com/kashyap-p/React-task-management",
-    year: "2024",
-  },
-  {
-    name: "Portfolio",
-    title: "Portfolio (legacy)",
-    description: "Earlier personal portfolio build in JavaScript.",
-    language: "JavaScript",
-    repoUrl: "https://github.com/kashyap-p/Portfolio",
-    year: "2024",
-  },
-  {
-    name: "IMDB_CLONE",
-    title: "IMDB Clone",
-    description: "Movie database clone exploring API integration & UI patterns.",
-    language: "JavaScript",
-    repoUrl: "https://github.com/kashyap-p/IMDB_CLONE",
-    year: "2023",
-  },
-  {
-    name: "ALARM-CLOCK",
-    title: "Alarm Clock",
-    description: "Browser-based alarm clock utility — CSS & JavaScript.",
-    language: "JavaScript",
-    repoUrl: "https://github.com/kashyap-p/ALARM-CLOCK",
-    year: "2023",
-  },
-  {
-    name: "kashyap-p",
-    title: "GitHub Profile README",
-    description: "Profile README for github.com/kashyap-p.",
-    language: null,
-    repoUrl: "https://github.com/kashyap-p/kashyap-p",
-    year: "2024",
-  },
-];
+// NOTE: The "Other repositories" list is now fetched live from the GitHub API
+// via /api/github, so adding or removing a repo on GitHub automatically
+// reflects on this site (cached for 10 minutes).
 
 export type Skill = {
   name: string;
