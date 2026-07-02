@@ -20,11 +20,14 @@ import {
   useScrolled,
 } from "@/hooks/use-scroll";
 
+// Compute section ids once — navLinks is a module-level constant.
+const SECTION_IDS = navLinks.map((l) => l.href.replace("#", ""));
+
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
   const scrolled = useScrolled(20);
   const progress = useScrollProgress();
-  const active = useActiveSection(navLinks.map((l) => l.href.replace("#", "")));
+  const active = useActiveSection(SECTION_IDS);
 
   return (
     <header

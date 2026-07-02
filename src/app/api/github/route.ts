@@ -6,11 +6,30 @@ import { profile } from "@/lib/portfolio-data";
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
 type CachedRepos = {
-  data: unknown;
+  data: PublicRepoSummary[];
   fetchedAt: number;
 };
 
 let cache: CachedRepos | null = null;
+
+// Rate limit for forced refreshes (?refresh=true) to avoid exhausting
+// GitHub's 60 req/hour unauthenticated limit. Allow max 5 forced refreshes
+// per 5 minutes per IP.
+const REFRESH_WINDOW_MS = 5 * 60 * 1000;
+const REFRESH_MAX = 5;
+const refreshHits = new Map<string, { count: number; first: number }>();
+
+function refreshRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = refreshHits.get(ip);
+  if (!entry || now - entry.first > REFRESH_WINDOW_MS) {
+    refreshHits.set(ip, { count: 1, first: now });
+    return false;
+  }
+  if (entry.count >= REFRESH_MAX) return true;
+  entry.count += 1;
+  return false;
+}
 
 type GithubRepo = {
   id: number;
@@ -110,6 +129,23 @@ export async function GET(req: NextRequest) {
   // ?refresh=true bypasses the cache and fetches fresh from GitHub.
   // Used by the "Refresh" button so visitors always get live data on demand.
   const forceRefresh = req.nextUrl.searchParams.get("refresh") === "true";
+
+  // Rate-limit forced refreshes to protect the GitHub API budget.
+  if (forceRefresh) {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
+    if (refreshRateLimited(ip)) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Too many refreshes. Please wait a few minutes and try again.",
+        },
+        { status: 429 }
+      );
+    }
+  }
 
   // Serve from cache if fresh AND not a forced refresh
   if (!forceRefresh && cache && now - cache.fetchedAt < CACHE_TTL_MS) {

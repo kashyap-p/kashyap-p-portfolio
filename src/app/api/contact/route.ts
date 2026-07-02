@@ -133,13 +133,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
-export async function GET() {
-  try {
-    const count = await db.contactMessage.count();
-    return NextResponse.json({ ok: true, count });
-  } catch {
-    // Database unavailable — report zero rather than failing the request.
-    return NextResponse.json({ ok: true, count: 0, persisted: false });
-  }
-}

@@ -98,7 +98,7 @@ export function Skills() {
                           transition={{
                             duration: 1,
                             delay: 0.15 + i * 0.08,
-                            ease: [0.22, 1, 0.36, 1],
+                            ease: [0.22, 1, 0.36, 1] as const,
                           }}
                           className={cn(
                             "h-full rounded-full bg-gradient-to-r",

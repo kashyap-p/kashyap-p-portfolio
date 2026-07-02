@@ -21,6 +21,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kashyap-p-portfolio.vercel.app"),
   title: "Kashyap Patel — Full-Stack Developer | 3D Portfolio",
   description:
     "Kashyap Patel is a full-stack developer building robust, end-to-end web applications. Explore an interactive 3D portfolio of projects, skills, and experience.",
@@ -41,6 +42,12 @@ export const metadata: Metadata = {
       "Interactive 3D portfolio of Kashyap Patel, full-stack developer.",
     type: "website",
   },
+};
+
+export const viewport = {
+  themeColor: "#10b981",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

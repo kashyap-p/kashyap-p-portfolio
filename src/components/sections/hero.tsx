@@ -36,7 +36,7 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
 };
 
 export function Hero() {
@@ -53,12 +53,14 @@ export function Hero() {
         <div className="absolute inset-0 bg-grid opacity-60" />
       </div>
 
-      {/* 3D scene */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
+      {/* 3D scene — receives pointer events for mouse-parallax */}
+      <div className="absolute inset-0 -z-10">
         <HeroScene />
       </div>
 
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+      {/* Content — pass-through so pointer events reach the 3D canvas,
+          except interactive elements which opt back in */}
+      <div className="pointer-events-none mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
         <motion.div
           variants={container}
           initial="hidden"
@@ -93,7 +95,7 @@ export function Hero() {
 
           <motion.div
             variants={item}
-            className="mt-8 flex flex-wrap items-center gap-2 sm:gap-3"
+            className="pointer-events-auto mt-8 flex flex-wrap items-center gap-2 sm:gap-3"
           >
             <Button asChild size="lg" className="group glow-emerald">
               <a href="#projects">

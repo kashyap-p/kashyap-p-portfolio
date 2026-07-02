@@ -145,6 +145,13 @@ function OtherRepos() {
 
   const handleRefresh = () => fetchRepos(true);
 
+  // Tick every 30s so the "updated Xm ago" label stays current.
+  const [tick, setTick] = React.useState(0);
+  React.useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 30_000);
+    return () => clearInterval(id);
+  }, []);
+
   const lastUpdatedLabel = React.useMemo(() => {
     if (!lastUpdated) return null;
     const diff = Math.max(0, Date.now() - lastUpdated);
@@ -153,7 +160,7 @@ function OtherRepos() {
     if (mins < 60) return `${mins}m ago`;
     const hrs = Math.floor(mins / 60);
     return `${hrs}h ago`;
-  }, [lastUpdated]);
+  }, [lastUpdated, tick]);
 
   return (
     <div className="mt-20">
@@ -318,7 +325,7 @@ function ProjectCard({ project }: { project: Project }) {
       initial={{ opacity: 0, scale: 0.95, y: 20 }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] as const }}
       className="group h-full"
     >
       <TiltCard

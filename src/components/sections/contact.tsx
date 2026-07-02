@@ -76,7 +76,6 @@ type SuccessState = {
 
 export function Contact() {
   const { toast } = useToast();
-  const [submitted, setSubmitted] = React.useState(false);
   const [success, setSuccess] = React.useState<SuccessState>(null);
 
   const {
@@ -106,14 +105,12 @@ export function Contact() {
         title: "Message sent! 🎉",
         description: `Thanks ${values.name.split(" ")[0]}, your message has been delivered.`,
       });
-      setSubmitted(true);
       setSuccess({
         name: values.name.split(" ")[0],
         recipient: data.recipient || profile.email,
         mailto: data.mailto,
       });
       reset();
-      setTimeout(() => setSubmitted(false), 4000);
     } catch (err) {
       toast({
         title: "Couldn't send message",
@@ -221,7 +218,7 @@ export function Contact() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
                 className="glass relative overflow-hidden rounded-3xl p-8 sm:p-10"
               >
                 <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-emerald-600/20 blur-3xl dark:bg-emerald-400/20" />
@@ -279,7 +276,7 @@ export function Contact() {
                 className="glass rounded-3xl p-6 sm:p-8"
               >
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                  <Field label="Your name" error={errors.name?.message} required>
+                  <Field label="Your name" htmlFor="name" error={errors.name?.message} required>
                     <Input
                       id="name"
                       placeholder="Jane Doe"
@@ -290,6 +287,7 @@ export function Contact() {
                   </Field>
                   <Field
                     label="Email address"
+                    htmlFor="email"
                     error={errors.email?.message}
                     required
                   >
@@ -305,7 +303,7 @@ export function Contact() {
                 </div>
 
                 <div className="mt-5">
-                  <Field label="Subject" error={errors.subject?.message}>
+                  <Field label="Subject" htmlFor="subject" error={errors.subject?.message}>
                     <Input
                       id="subject"
                       placeholder="Project inquiry / collaboration / hiring"
@@ -318,6 +316,7 @@ export function Contact() {
                 <div className="mt-5">
                   <Field
                     label="Message"
+                    htmlFor="message"
                     error={errors.message?.message}
                     required
                   >
@@ -354,11 +353,6 @@ export function Contact() {
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Sending…
                       </>
-                    ) : submitted ? (
-                      <>
-                        <CheckCircle2 className="mr-2 h-4 w-4" />
-                        Sent!
-                      </>
                     ) : (
                       <>
                         <Send className="mr-2 h-4 w-4" />
@@ -378,18 +372,20 @@ export function Contact() {
 
 function Field({
   label,
+  htmlFor,
   error,
   required,
   children,
 }: {
   label: string;
+  htmlFor: string;
   error?: string;
   required?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div>
-      <Label htmlFor={label} className="mb-1.5 flex items-center gap-1 text-sm font-medium">
+      <Label htmlFor={htmlFor} className="mb-1.5 flex items-center gap-1 text-sm font-medium">
         {label}
         {required && <span className="text-primary">*</span>}
       </Label>
