@@ -122,7 +122,7 @@ story.append(Paragraph('KASHYAP PATEL', name_style))
 story.append(Paragraph('Full-Stack Developer &amp; AI Engineer', role_style))
 story.append(Paragraph(
     '<link href="mailto:kashyappatel326@gmail.com"><font color="#3f3f46">kashyappatel326@gmail.com</font></link>'
-    '  |  India  |  '
+    '  |  +91 8780029920  |  India  |  '
     '<link href="https://github.com/kashyap-p"><font color="#1d4ed8">github.com/kashyap-p</font></link>'
     '  |  '
     '<link href="https://www.linkedin.com/in/kashyap-p"><font color="#1d4ed8">linkedin.com/in/kashyap-p</font></link>'

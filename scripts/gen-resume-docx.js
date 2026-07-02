@@ -39,7 +39,7 @@ const header = [
     alignment: AlignmentType.CENTER, spacing: { after: 100 },
     children: [
       link("mailto:kashyappatel326@gmail.com", "kashyappatel326@gmail.com", 17),
-      muted("  |  India  |  ", 17),
+      muted("  |  +91 8780029920  |  India  |  ", 17),
       link("https://github.com/kashyap-p", "github.com/kashyap-p", 17),
       muted("  |  ", 17),
       link("https://www.linkedin.com/in/kashyap-p", "linkedin.com/in/kashyap-p", 17),
