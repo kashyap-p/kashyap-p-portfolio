@@ -5,11 +5,15 @@
   "description": "Interactive 3D animated portfolio of Kashyap Patel — full-stack developer.",
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "prebuild": "prisma generate",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint .",
     "db:push": "prisma db push",
     "db:generate": "prisma generate"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
