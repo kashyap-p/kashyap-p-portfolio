@@ -60,7 +60,7 @@ export const projects: Project[] = [
     description:
       "Full-stack travel listings platform — Node.js, Express, MongoDB with JWT auth, geolocation maps, and image uploads.",
     tags: ["Node.js", "Express", "MongoDB", "EJS", "Passport.js"],
-    liveUrl: "https://wanderlust-nodejs-project.onrender.com/listings",
+    liveUrl: "https://wanderlust-nodejs-project-rho.vercel.app/",
     repoUrl: "https://github.com/kashyap-p/Wanderlust---Nodejs-Project",
     accent: "emerald",
     highlights: [

@@ -214,9 +214,9 @@ children.push(...projectBlock(
 children.push(...projectBlock(
   "Wanderlust", "Node.js, Express, MongoDB, EJS, Passport.js",
   "https://github.com/kashyap-p/Wanderlust---Nodejs-Project", "github.com/kashyap-p/Wanderlust",
-  "https://wanderlust-nodejs-project.onrender.com/listings",
+  "https://wanderlust-nodejs-project-rho.vercel.app",
   "Full-stack MERN travel listings platform with CRUD operations, JWT authentication, map geolocation, " +
-  "and image upload integration. Deployed on Render."
+  "and image upload integration. Deployed on Vercel."
 ));
 
 // ── Document ──

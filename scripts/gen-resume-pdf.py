@@ -206,9 +206,9 @@ story.extend(project_entry(
 story.extend(project_entry(
     'Wanderlust', 'Node.js, Express, MongoDB, EJS, Passport.js',
     'github.com/kashyap-p/Wanderlust---Nodejs-Project',
-    'https://wanderlust-nodejs-project.onrender.com/listings',
+    'https://wanderlust-nodejs-project-rho.vercel.app',
     'Full-stack MERN travel listings platform with CRUD operations, JWT authentication, map geolocation, '
-    'and image upload integration. Deployed on Render.'
+    'and image upload integration. Deployed on Vercel.'
 ))
 
 doc.build(story)
