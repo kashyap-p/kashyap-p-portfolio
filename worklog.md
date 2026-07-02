@@ -88,3 +88,30 @@ Verification (Agent Browser + VLM):
 Stage Summary:
 - Email updated everywhere to kashyappatel326@gmail.com
 - Contact form now has a clear, verified working submit flow: validation → DB persistence → success card → optional direct email delivery via mailto fallback
+
+---
+Task ID: 4
+Agent: main
+Task: Projects section — show only ClaimSight, Weather Tracker, Tech News, Todo App as cards; rest as GitHub links
+
+Work Log:
+- Restructured src/lib/portfolio-data.ts:
+  - `projects` array trimmed to exactly 4 featured cards: ClaimSight, Weather Tracker, Tech News, Todo App (each kept full rich data: tagline, description, highlights, tags, live + repo URLs)
+  - Added new `OtherRepo` type + `otherRepos` array with the remaining 8 repos: Wanderlust, Kashyap Portfolio, 3D Portfolio, Task Management, Portfolio (legacy), IMDB Clone, Alarm Clock, GitHub Profile README — each with title, description, language, repoUrl, optional liveUrl, year
+- Rewrote src/components/sections/projects.tsx:
+  - Removed the All/Featured filter tabs (no longer needed)
+  - Featured cards now render in a 2-column grid (md/lg), larger and more prominent
+  - Added "More on GitHub" subsection below: eyebrow badge, heading, description, "View all repos" button, and a 2-column compact list of all 8 other repos — each a hoverable link card with GitHub icon, title, description, language dot, year, and "Live demo" indicator where applicable
+- Lint: clean (eslint . passes)
+
+Verification (Agent Browser + VLM):
+- DOM confirms exactly 4 featured card headings: ClaimSight, Weather Tracker, Tech News, Todo App
+- "Other repositories" section present; 8 other-repo link cards with titles: Wanderlust, Kashyap Portfolio, 3D Portfolio, Task Management, Portfolio (legacy), IMDB Clone, Alarm Clock, GitHub Profile README
+- Filter buttons count = 0 (removed as intended)
+- No console/runtime errors
+- VLM confirmed full-page screenshot shows exactly 4 featured cards + "Other repositories" section below
+
+Stage Summary:
+- Projects section now shows only the 4 requested projects as featured cards
+- All other repositories (8) listed as compact GitHub-linked cards in a "More on GitHub" subsection
+- All 12 repos from github.com/kashyap-p are represented (4 cards + 8 list items)

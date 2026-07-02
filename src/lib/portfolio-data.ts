@@ -39,7 +39,7 @@ export type Project = {
   year: string;
 };
 
-// Curated "most useful" projects from github.com/kashyap-p
+// Featured projects shown as cards in the Projects section (curated subset)
 export const projects: Project[] = [
   {
     name: "claimsight",
@@ -95,96 +95,6 @@ export const projects: Project[] = [
     year: "2026",
   },
   {
-    name: "kashyap-portfolio",
-    slug: "kashyap-portfolio",
-    title: "Kashyap Portfolio",
-    tagline: "Next.js 16 portfolio with live GitHub stats",
-    description:
-      "Personal portfolio website — Next.js 16, TypeScript, Tailwind CSS. Live GitHub stats with no third-party image dependencies.",
-    descriptionLong:
-      "A personal portfolio website built with Next.js 16, TypeScript and Tailwind CSS. It renders live GitHub stats with zero third-party image dependencies — every metric is fetched and rendered server-side.",
-    tags: ["Next.js 16", "TypeScript", "Tailwind CSS", "Server Components"],
-    language: "TypeScript",
-    liveUrl: "https://kashyap-port-folio.vercel.app/",
-    repoUrl: "https://github.com/kashyap-p/kashyap-portfolio",
-    featured: true,
-    accent: "amber",
-    highlights: [
-      "Next.js 16 App Router",
-      "Live GitHub stats, no image deps",
-      "TypeScript end-to-end",
-      "Tailwind CSS design system",
-    ],
-    year: "2026",
-  },
-  {
-    name: "portfolioNEW",
-    slug: "portfolio-3d",
-    title: "3D Portfolio",
-    tagline: "React 18 + Three.js immersive portfolio",
-    description:
-      "3D portfolio website built with React 18, Three.js (React Three Fiber), and Vite.",
-    descriptionLong:
-      "An immersive 3D portfolio website built with React 18, Three.js via React Three Fiber, and Vite. Features real-time 3D scenes, animated geometry, and interactive camera work.",
-    tags: ["React 18", "Three.js", "React Three Fiber", "Vite", "WebGL"],
-    language: "JavaScript",
-    liveUrl: "https://kashyap-p.github.io/portfolioNEW/",
-    repoUrl: "https://github.com/kashyap-p/portfolioNEW",
-    featured: true,
-    accent: "pink",
-    highlights: [
-      "Real-time 3D scenes",
-      "React Three Fiber",
-      "Interactive camera work",
-      "Vite build pipeline",
-    ],
-    year: "2026",
-  },
-  {
-    name: "Wanderlust---Nodejs-Project",
-    slug: "wanderlust",
-    title: "Wanderlust",
-    tagline: "Node.js + Express + MongoDB travel platform",
-    description:
-      "Wanderlust Project made using NodeJS, ExpressJS, MongoDB — a full-stack travel listings platform.",
-    descriptionLong:
-      "A full-stack travel listings platform built with Node.js, Express and MongoDB. Users can browse, create and review travel listings with authentication, map integration, and image uploads.",
-    tags: ["Node.js", "Express", "MongoDB", "EJS", "Passport Auth"],
-    language: "JavaScript",
-    liveUrl: "https://wanderlust-nodejs-project.onrender.com/listings",
-    repoUrl: "https://github.com/kashyap-p/Wanderlust---Nodejs-Project",
-    featured: true,
-    accent: "emerald",
-    highlights: [
-      "Full CRUD listings platform",
-      "Authentication & authorization",
-      "Map & image upload integration",
-      "Deployed on Render",
-    ],
-    year: "2024",
-  },
-  {
-    name: "React-task-management",
-    slug: "task-management",
-    title: "Task Management",
-    tagline: "Priority-based React task manager",
-    description:
-      "React Task Management with Priority Lists — organize work by priority and status.",
-    descriptionLong:
-      "A React task management application with priority lists. Tasks can be organized, prioritized and tracked across statuses for focused, productive workflows.",
-    tags: ["React", "State Management", "Productivity", "UI"],
-    language: "JavaScript",
-    repoUrl: "https://github.com/kashyap-p/React-task-management",
-    featured: false,
-    accent: "amber",
-    highlights: [
-      "Priority-based task lists",
-      "Status tracking",
-      "Clean React state management",
-    ],
-    year: "2024",
-  },
-  {
     name: "tech-news",
     slug: "tech-news",
     title: "Tech News",
@@ -197,7 +107,7 @@ export const projects: Project[] = [
     language: "CSS",
     liveUrl: "https://kashyap-p.github.io/tech-news/",
     repoUrl: "https://github.com/kashyap-p/tech-news",
-    featured: false,
+    featured: true,
     accent: "teal",
     highlights: [
       "Responsive layout",
@@ -219,7 +129,7 @@ export const projects: Project[] = [
     language: "CSS",
     liveUrl: "https://kashyap-p.github.io/todo-app/",
     repoUrl: "https://github.com/kashyap-p/todo-app",
-    featured: false,
+    featured: true,
     accent: "pink",
     highlights: [
       "LocalStorage persistence",
@@ -227,6 +137,91 @@ export const projects: Project[] = [
       "Minimal vanilla stack",
     ],
     year: "2026",
+  },
+];
+
+// Remaining repositories from github.com/kashyap-p — shown as a compact list
+export type OtherRepo = {
+  name: string;
+  title: string;
+  description: string;
+  language: string | null;
+  repoUrl: string;
+  liveUrl?: string;
+  year: string;
+};
+
+export const otherRepos: OtherRepo[] = [
+  {
+    name: "Wanderlust---Nodejs-Project",
+    title: "Wanderlust",
+    description:
+      "Full-stack travel listings platform — Node.js, Express, MongoDB with auth, map & image uploads.",
+    language: "JavaScript",
+    repoUrl: "https://github.com/kashyap-p/Wanderlust---Nodejs-Project",
+    liveUrl: "https://wanderlust-nodejs-project.onrender.com/listings",
+    year: "2024",
+  },
+  {
+    name: "kashyap-portfolio",
+    title: "Kashyap Portfolio",
+    description:
+      "Next.js 16 portfolio with live GitHub stats — no third-party image dependencies.",
+    language: "TypeScript",
+    repoUrl: "https://github.com/kashyap-p/kashyap-portfolio",
+    liveUrl: "https://kashyap-port-folio.vercel.app/",
+    year: "2026",
+  },
+  {
+    name: "portfolioNEW",
+    title: "3D Portfolio",
+    description:
+      "Immersive 3D portfolio — React 18, Three.js (React Three Fiber) and Vite.",
+    language: "JavaScript",
+    repoUrl: "https://github.com/kashyap-p/portfolioNEW",
+    liveUrl: "https://kashyap-p.github.io/portfolioNEW/",
+    year: "2026",
+  },
+  {
+    name: "React-task-management",
+    title: "Task Management",
+    description:
+      "React task management app with priority lists — organize work by priority & status.",
+    language: "JavaScript",
+    repoUrl: "https://github.com/kashyap-p/React-task-management",
+    year: "2024",
+  },
+  {
+    name: "Portfolio",
+    title: "Portfolio (legacy)",
+    description: "Earlier personal portfolio build in JavaScript.",
+    language: "JavaScript",
+    repoUrl: "https://github.com/kashyap-p/Portfolio",
+    year: "2024",
+  },
+  {
+    name: "IMDB_CLONE",
+    title: "IMDB Clone",
+    description: "Movie database clone exploring API integration & UI patterns.",
+    language: "JavaScript",
+    repoUrl: "https://github.com/kashyap-p/IMDB_CLONE",
+    year: "2023",
+  },
+  {
+    name: "ALARM-CLOCK",
+    title: "Alarm Clock",
+    description: "Browser-based alarm clock utility — CSS & JavaScript.",
+    language: "JavaScript",
+    repoUrl: "https://github.com/kashyap-p/ALARM-CLOCK",
+    year: "2023",
+  },
+  {
+    name: "kashyap-p",
+    title: "GitHub Profile README",
+    description: "Profile README for github.com/kashyap-p.",
+    language: null,
+    repoUrl: "https://github.com/kashyap-p/kashyap-p",
+    year: "2024",
   },
 ];
 

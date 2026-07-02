@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ExternalLink,
   Github,
@@ -13,7 +12,7 @@ import { SectionHeading } from "@/components/section-heading";
 import { TiltCard } from "@/components/tilt-card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { projects, type Project } from "@/lib/portfolio-data";
+import { projects, otherRepos, type Project } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
 
 const accentMap: Record<
@@ -66,82 +65,106 @@ const accentMap: Record<
   },
 };
 
-const filters = [
-  { key: "all", label: "All Projects" },
-  { key: "featured", label: "Featured" },
-] as const;
-
-type FilterKey = (typeof filters)[number]["key"];
-
 export function Projects() {
-  const [filter, setFilter] = React.useState<FilterKey>("all");
-
-  const visible = React.useMemo(() => {
-    if (filter === "featured") return projects.filter((p) => p.featured);
-    return projects;
-  }, [filter]);
-
   return (
     <section id="projects" className="relative py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Projects"
           title="Selected work & useful builds"
-          description="A curated set of projects from github.com/kashyap-p — from multi-agent AI copilots to immersive 3D experiences and full-stack platforms."
+          description="A curated set of projects from github.com/kashyap-p — from multi-agent AI copilots to glassmorphism dashboards and clean frontend builds."
         />
 
-        {/* Filter */}
-        <div className="mt-10 flex justify-center">
-          <div className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-card/40 p-1 backdrop-blur">
-            {filters.map((f) => (
-              <button
-                key={f.key}
-                onClick={() => setFilter(f.key)}
-                className={cn(
-                  "relative rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
-                  filter === f.key
-                    ? "text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {filter === f.key && (
-                  <motion.span
-                    layoutId="project-filter"
-                    className="absolute inset-0 -z-10 rounded-full bg-primary"
-                    transition={{ type: "spring", stiffness: 360, damping: 30 }}
-                  />
-                )}
-                {f.label}
-              </button>
-            ))}
-          </div>
+        {/* Featured project cards */}
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
         </div>
 
-        {/* Grid */}
-        <motion.div
-          layout
-          className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-        >
-          <AnimatePresence mode="popLayout">
-            {visible.map((project) => (
-              <ProjectCard key={project.slug} project={project} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* More on GitHub */}
+        <div className="mt-20">
+          <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs font-medium uppercase tracking-[0.2em] text-primary">
+                <Github className="h-3.5 w-3.5" />
+                More on GitHub
+              </span>
+              <h3 className="mt-3 font-display text-2xl font-bold sm:text-3xl">
+                Other repositories
+              </h3>
+              <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+                The rest of my open-source work — full-stack platforms, legacy
+                builds and small utilities. All live on{" "}
+                <a
+                  href="https://github.com/kashyap-p"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-primary hover:underline"
+                >
+                  github.com/kashyap-p
+                </a>
+                .
+              </p>
+            </div>
+            <Button asChild variant="outline" size="sm" className="shrink-0">
+              <a
+                href="https://github.com/kashyap-p"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Github className="mr-2 h-4 w-4" />
+                View all repos
+                <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
+              </a>
+            </Button>
+          </div>
 
-        {/* CTA to GitHub */}
-        <div className="mt-14 flex justify-center">
-          <Button asChild variant="outline" size="lg" className="group">
-            <a
-              href="https://github.com/kashyap-p"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Github className="mr-2 h-4 w-4" />
-              See all 12 repositories on GitHub
-              <ArrowUpRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-          </Button>
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2">
+            {otherRepos.map((repo, i) => (
+              <motion.a
+                key={repo.name}
+                href={repo.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className="group flex items-start gap-4 rounded-2xl border border-border/60 bg-card/40 p-4 backdrop-blur transition-colors hover:border-primary/40 hover:bg-primary/5"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                  <Github className="h-5 w-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <h4 className="truncate font-display text-base font-semibold">
+                      {repo.title}
+                    </h4>
+                    <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </div>
+                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                    {repo.description}
+                  </p>
+                  <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+                    {repo.language && (
+                      <span className="inline-flex items-center gap-1">
+                        <span className="h-2 w-2 rounded-full bg-accent" />
+                        {repo.language}
+                      </span>
+                    )}
+                    <span className="font-mono">{repo.year}</span>
+                    {repo.liveUrl && (
+                      <span className="inline-flex items-center gap-1 text-primary">
+                        <ExternalLink className="h-3 w-3" />
+                        Live demo
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </motion.a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -153,11 +176,10 @@ function ProjectCard({ project }: { project: Project }) {
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.92, y: 20 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.92 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       className="group h-full"
     >
       <TiltCard
@@ -168,12 +190,15 @@ function ProjectCard({ project }: { project: Project }) {
           a.glow
         )}
       >
-        <div className="flex h-full flex-col" style={{ transform: "translateZ(40px)" }}>
+        <div
+          className="flex h-full flex-col"
+          style={{ transform: "translateZ(40px)" }}
+        >
           {/* Header */}
           <div className="flex items-start justify-between gap-3">
             <div
               className={cn(
-                "flex h-11 w-11 items-center justify-center rounded-xl font-display text-lg font-bold ring-1",
+                "flex h-12 w-12 items-center justify-center rounded-xl font-display text-xl font-bold ring-1",
                 a.bg,
                 a.text,
                 a.border
@@ -182,11 +207,9 @@ function ProjectCard({ project }: { project: Project }) {
               {project.title.charAt(0)}
             </div>
             <div className="flex items-center gap-1.5">
-              {project.featured && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-amber-300 ring-1 ring-amber-400/20">
-                  <Star className="h-3 w-3 fill-amber-300" /> Featured
-                </span>
-              )}
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-amber-300 ring-1 ring-amber-400/20">
+                <Star className="h-3 w-3 fill-amber-300" /> Featured
+              </span>
               <span className="font-mono text-xs text-muted-foreground">
                 {project.year}
               </span>
@@ -194,7 +217,9 @@ function ProjectCard({ project }: { project: Project }) {
           </div>
 
           {/* Title */}
-          <h3 className="mt-4 font-display text-xl font-bold">{project.title}</h3>
+          <h3 className="mt-4 font-display text-2xl font-bold">
+            {project.title}
+          </h3>
           <p className={cn("mt-0.5 text-sm font-medium", a.text)}>
             {project.tagline}
           </p>
@@ -211,7 +236,9 @@ function ProjectCard({ project }: { project: Project }) {
                 key={h}
                 className="flex items-start gap-2 text-xs text-muted-foreground"
               >
-                <CheckCircle2 className={cn("mt-0.5 h-3.5 w-3.5 shrink-0", a.text)} />
+                <CheckCircle2
+                  className={cn("mt-0.5 h-3.5 w-3.5 shrink-0", a.text)}
+                />
                 <span>{h}</span>
               </li>
             ))}
@@ -219,7 +246,7 @@ function ProjectCard({ project }: { project: Project }) {
 
           {/* Tags */}
           <div className="mt-5 flex flex-wrap gap-1.5">
-            {project.tags.slice(0, 4).map((tag) => (
+            {project.tags.slice(0, 5).map((tag) => (
               <Badge
                 key={tag}
                 variant="secondary"
@@ -236,7 +263,18 @@ function ProjectCard({ project }: { project: Project }) {
           {/* Actions */}
           <div className="mt-6 flex items-center gap-2 border-t border-border/40 pt-4">
             {project.liveUrl ? (
-              <Button asChild size="sm" className={cn("flex-1", a.bg, a.text, a.border, "border hover:opacity-90")} variant="secondary">
+              <Button
+                asChild
+                size="sm"
+                className={cn(
+                  "flex-1 border",
+                  a.bg,
+                  a.text,
+                  a.border,
+                  "hover:opacity-90"
+                )}
+                variant="secondary"
+              >
                 <a
                   href={project.liveUrl}
                   target="_blank"
