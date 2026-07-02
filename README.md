@@ -296,6 +296,29 @@ npx next dev -p 3001
 </details>
 
 <details>
+<summary><strong>Vercel build fails / contact form on Vercel</strong></summary>
+
+The build is configured to be database-optional:
+
+- `postinstall` and `build` scripts both run `prisma generate` automatically, so the Prisma Client is always available at build time.
+- The `/api/contact` route **tries** to persist messages to the database, but if no database is configured (e.g. on Vercel without `DATABASE_URL`), it **gracefully falls back** to a `mailto:` link — the visitor still gets a working "Send via Email" button. The build never fails.
+
+**For local dev** (persists to SQLite):
+```bash
+bun run db:push   # creates db/custom.db
+```
+
+**For persistent storage on Vercel**, set a hosted database URL in Vercel env vars and update `prisma/schema.prisma`:
+1. Provision a DB (Neon Postgres, Supabase, PlanetScale, etc.)
+2. In Vercel: **Project → Settings → Environment Variables** → add `DATABASE_URL`
+3. Change `provider = "sqlite"` → `provider = "postgresql"` (or `"mysql"`) in `prisma/schema.prisma`
+4. Redeploy
+
+If you just want the portfolio live without a database, **no setup needed** — the mailto fallback handles contact submissions.
+
+</details>
+
+<details>
 <summary><strong>"module not found" after switching package managers</strong></summary>
 
 Different package managers create incompatible lockfiles. Pick one and stick with it. To switch cleanly:

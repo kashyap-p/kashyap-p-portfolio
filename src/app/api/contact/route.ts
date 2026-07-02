@@ -15,6 +15,8 @@ const contactSchema = z.object({
     .max(2000, "Message is too long"),
 });
 
+const OWNER_EMAIL = "kashyappatel326@gmail.com";
+
 // Simple in-memory rate limiting (per IP, per window)
 const RATE_WINDOW_MS = 60_000;
 const RATE_MAX = 4;
@@ -30,6 +32,29 @@ function rateLimit(ip: string): boolean {
   if (entry.count >= RATE_MAX) return false;
   entry.count += 1;
   return true;
+}
+
+function buildMailto(
+  name: string,
+  email: string,
+  subject: string | undefined,
+  message: string,
+  idHint?: string
+) {
+  const mailSubject =
+    subject && subject.length > 0 ? subject : `Portfolio message from ${name}`;
+  const mailBody = [
+    `Name: ${name}`,
+    `Email: ${email}`,
+    "",
+    "Message:",
+    message,
+    "",
+    `— Sent via kashyap-p portfolio${idHint ? ` (message id: ${idHint})` : ""}`,
+  ].join("\n");
+  return `mailto:${OWNER_EMAIL}?subject=${encodeURIComponent(
+    mailSubject
+  )}&body=${encodeURIComponent(mailBody)}`;
 }
 
 export async function POST(req: NextRequest) {
@@ -59,45 +84,46 @@ export async function POST(req: NextRequest) {
 
     const { name, email, subject, message } = parsed.data;
 
-    const saved = await db.contactMessage.create({
-      data: {
-        name,
-        email,
-        subject: subject && subject.length > 0 ? subject : null,
-        message,
-      },
-    });
+    // Try to persist to the database. On serverless platforms without a
+    // persistent filesystem (e.g. Vercel without an external DB), this will
+    // fail gracefully — we still return success with a mailto fallback so the
+    // visitor can deliver the message via their own email client.
+    let savedId: string | undefined;
+    let persisted = false;
+    try {
+      const saved = await db.contactMessage.create({
+        data: {
+          name,
+          email,
+          subject: subject && subject.length > 0 ? subject : null,
+          message,
+        },
+      });
+      savedId = saved.id;
+      persisted = true;
+      console.log(
+        `[contact] New message from ${name} <${email}> (id: ${savedId}) → ${OWNER_EMAIL}`
+      );
+    } catch (dbErr) {
+      // Database unavailable (e.g. Vercel serverless, no DATABASE_URL).
+      // Non-fatal — the mailto fallback still delivers the message.
+      console.warn(
+        "[contact] DB persist skipped (database unavailable). Falling back to mailto only.",
+        dbErr instanceof Error ? dbErr.message : dbErr
+      );
+    }
 
-    // Build a mailto link so the visitor can also deliver the message straight
-    // to the portfolio owner's inbox via their own email client.
-    const ownerEmail = "kashyappatel326@gmail.com";
-    const mailSubject =
-      subject && subject.length > 0
-        ? subject
-        : `Portfolio message from ${name}`;
-    const mailBody = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      "",
-      "Message:",
-      message,
-      "",
-      `— Sent via kashyap-p portfolio (message id: ${saved.id})`,
-    ].join("\n");
-    const mailto = `mailto:${ownerEmail}?subject=${encodeURIComponent(
-      mailSubject
-    )}&body=${encodeURIComponent(mailBody)}`;
-
-    console.log(
-      `[contact] New message from ${name} <${email}> (id: ${saved.id}) → ${ownerEmail}`
-    );
+    const mailto = buildMailto(name, email, subject, message, savedId);
 
     return NextResponse.json({
       ok: true,
-      id: saved.id,
-      recipient: ownerEmail,
+      id: savedId ?? `mailto-${Date.now()}`,
+      persisted,
+      recipient: OWNER_EMAIL,
       mailto,
-      message: "Thanks! Your message has been received.",
+      message: persisted
+        ? "Thanks! Your message has been received."
+        : "Thanks! Use the email link to send your message directly.",
     });
   } catch (err) {
     console.error("[contact] error", err);
@@ -113,6 +139,7 @@ export async function GET() {
     const count = await db.contactMessage.count();
     return NextResponse.json({ ok: true, count });
   } catch {
-    return NextResponse.json({ ok: true, count: 0 });
+    // Database unavailable — report zero rather than failing the request.
+    return NextResponse.json({ ok: true, count: 0, persisted: false });
   }
 }
