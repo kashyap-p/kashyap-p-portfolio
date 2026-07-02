@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { profile } from "@/lib/portfolio-data";
 
 // In-memory cache to avoid hitting GitHub rate limits.
@@ -12,7 +12,7 @@ type CachedRepos = {
 
 let cache: CachedRepos | null = null;
 
-export type GithubRepo = {
+type GithubRepo = {
   id: number;
   name: string;
   full_name: string;
@@ -31,7 +31,7 @@ export type GithubRepo = {
   visibility: string;
 };
 
-export type PublicRepoSummary = {
+type PublicRepoSummary = {
   name: string;
   title: string;
   description: string;
@@ -105,11 +105,14 @@ function buildSummary(repo: GithubRepo): PublicRepoSummary {
   };
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const now = Date.now();
+  // ?refresh=true bypasses the cache and fetches fresh from GitHub.
+  // Used by the "Refresh" button so visitors always get live data on demand.
+  const forceRefresh = req.nextUrl.searchParams.get("refresh") === "true";
 
-  // Serve from cache if fresh
-  if (cache && now - cache.fetchedAt < CACHE_TTL_MS) {
+  // Serve from cache if fresh AND not a forced refresh
+  if (!forceRefresh && cache && now - cache.fetchedAt < CACHE_TTL_MS) {
     return NextResponse.json(
       { ok: true, repos: cache.data, cached: true, fetchedAt: cache.fetchedAt },
       {

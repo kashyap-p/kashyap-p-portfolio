@@ -169,3 +169,42 @@ Stage Summary:
 - "Other repositories" now LIVE-syncs from GitHub API — add/delete a repo on GitHub and it reflects on the site within 10 minutes (or instantly via Refresh button)
 - Mobile fully responsive across hero, about, projects (featured + dynamic), contact, footer
 - 4 featured cards unchanged; 8 dynamic repos replacing the old static list
+
+---
+Task ID: 6
+Agent: main
+Task: Fix Refresh showing stale timestamp + clean up unused code + optimize
+
+Work Log:
+1) Fixed Refresh button (the core bug)
+- Root cause: /api/github cached for 10 min, so Refresh returned the same cached fetchedAt → "updated 6m ago" never changed
+- Added ?refresh=true query param support to GET handler: bypasses in-memory cache and fetches fresh from GitHub API
+- Updated OtherRepos component: fetchRepos(force) — initial mount calls /api/github (cached), Refresh button calls /api/github?refresh=true (live)
+- Removed the "idle" status (initial state is now "loading" → skeleton shows immediately)
+- Wired Refresh button + error "Try again" to handleRefresh (force=true)
+- Verified: timestamp "updated 1m ago" → clicked Refresh → "updated just now"; dev.log shows GET /api/github?refresh=true 200 in 551ms (real GitHub fetch vs ~6ms cache hits)
+
+2) Removed unused files (37 files deleted)
+- shadcn/ui components removed (38 → 8 kept): accordion, alert, alert-dialog, aspect-ratio, avatar, breadcrumb, calendar, card, carousel, chart, checkbox, collapsible, command, context-menu, dialog, drawer, dropdown-menu, form, hover-card, input-otp, menubar, navigation-menu, pagination, popover, progress, radio-group, resizable, scroll-area, select, separator, sidebar, skeleton, slider, sonner, switch, table, tabs, toggle, toggle-group, tooltip
+- Kept only the 8 actually used: badge, button, input, label, sheet, textarea, toast, toaster
+- Removed src/app/api/route.ts (default "Hello world" scaffold API — unused)
+- Removed src/hooks/use-mobile.ts (only used by sidebar.tsx, which was removed)
+
+3) Optimized for speed (kept fluid)
+- Removed <Environment preset="city"> from hero-scene.tsx — this loaded an external HDRI file from the network on every page load. The scene already has 5 lights (ambient, directional, 2 point, spotlight) so lighting is unchanged. VLM confirmed no visual regression.
+- Stripped dead data from portfolio-data.ts that shipped to client: removed descriptionLong (4 long strings), name, featured, language, tagline(profile) fields from Project type + data. Reduced client bundle.
+- Unexported internal types (GithubRepo, PublicRepoSummary in route.ts; Skill, TimelineItem in data.ts) — no longer publicly exported since nothing imports them.
+- 3D scene remains client-only via dynamic import (ssr:false), dpr capped at [1,2] for retina without over-rendering
+
+4) Verification
+- Lint: clean (eslint . passes)
+- dev.log: healthy, GET / 200 in ~130ms, GET /api/github cache hits ~5ms, refresh fetches ~550ms
+- Agent Browser: Refresh button updates "updated just now" (was "1m ago"); 3D hero still renders correctly (green sphere, wireframe, orbiting shapes, sparkles, good lighting); mobile 390px — hero buttons + social icons visible, no overflow, 6 sections + footer present, 5 LinkedIn links
+- File count: src down to 31 TS/TSX files (from 68+)
+
+Stage Summary:
+- Refresh button now fetches LIVE from GitHub (bypasses cache) — "updated just now" every time you click it
+- 37 unused files removed (38 shadcn components → 8; + scaffold API + orphaned hook)
+- 3D hero optimized (removed network HDRI fetch) — same look, faster load
+- Dead client data stripped (descriptionLong etc.)
+- Lint clean, page renders in ~130ms, cache hits ~5ms, all features still working

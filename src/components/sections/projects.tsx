@@ -109,16 +109,17 @@ export function Projects() {
 function OtherRepos() {
   const [repos, setRepos] = React.useState<ApiRepo[]>([]);
   const [status, setStatus] = React.useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
+    "loading" | "success" | "error"
+  >("loading");
   const [error, setError] = React.useState<string>("");
   const [lastUpdated, setLastUpdated] = React.useState<number | null>(null);
 
-  const fetchRepos = React.useCallback(async () => {
-    setStatus((s) => (s === "idle" ? "loading" : "loading"));
+  const fetchRepos = React.useCallback(async (force = false) => {
+    setStatus("loading");
     setError("");
     try {
-      const res = await fetch("/api/github", { cache: "no-store" });
+      const url = force ? "/api/github?refresh=true" : "/api/github";
+      const res = await fetch(url, { cache: "no-store" });
       const data = await res.json();
       if (!res.ok || !data.ok) {
         throw new Error(data.error || "Failed to load repositories");
@@ -132,10 +133,12 @@ function OtherRepos() {
     }
   }, []);
 
-  // Fetch on mount
+  // Fetch on mount (uses cache)
   React.useEffect(() => {
-    fetchRepos();
+    fetchRepos(false);
   }, [fetchRepos]);
+
+  const handleRefresh = () => fetchRepos(true);
 
   const lastUpdatedLabel = React.useMemo(() => {
     if (!lastUpdated) return null;
@@ -180,7 +183,7 @@ function OtherRepos() {
           <Button
             variant="outline"
             size="sm"
-            onClick={fetchRepos}
+            onClick={handleRefresh}
             disabled={status === "loading"}
           >
             {status === "loading" ? (
@@ -230,7 +233,7 @@ function OtherRepos() {
             <p className="font-medium">Couldn&apos;t load repositories</p>
             <p className="mt-1 text-sm text-muted-foreground">{error}</p>
           </div>
-          <Button variant="outline" size="sm" onClick={fetchRepos}>
+          <Button variant="outline" size="sm" onClick={handleRefresh}>
             <RefreshCw className="mr-2 h-4 w-4" />
             Try again
           </Button>

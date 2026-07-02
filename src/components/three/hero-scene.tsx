@@ -6,7 +6,6 @@ import {
   Float,
   MeshDistortMaterial,
   Sparkles,
-  Environment,
   Icosahedron,
   Torus,
   Octahedron,
@@ -238,8 +237,6 @@ function SceneContents() {
         opacity={0.6}
         color="#fbbf24"
       />
-
-      <Environment preset="city" />
     </>
   );
 }
