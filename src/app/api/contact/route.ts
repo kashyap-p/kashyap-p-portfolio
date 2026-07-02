@@ -68,12 +68,35 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // In a real app you'd also send an email / notification here.
-    console.log(`[contact] New message from ${name} <${email}> (id: ${saved.id})`);
+    // Build a mailto link so the visitor can also deliver the message straight
+    // to the portfolio owner's inbox via their own email client.
+    const ownerEmail = "kashyappatel326@gmail.com";
+    const mailSubject =
+      subject && subject.length > 0
+        ? subject
+        : `Portfolio message from ${name}`;
+    const mailBody = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      "",
+      "Message:",
+      message,
+      "",
+      `— Sent via kashyap-p portfolio (message id: ${saved.id})`,
+    ].join("\n");
+    const mailto = `mailto:${ownerEmail}?subject=${encodeURIComponent(
+      mailSubject
+    )}&body=${encodeURIComponent(mailBody)}`;
+
+    console.log(
+      `[contact] New message from ${name} <${email}> (id: ${saved.id}) → ${ownerEmail}`
+    );
 
     return NextResponse.json({
       ok: true,
       id: saved.id,
+      recipient: ownerEmail,
+      mailto,
       message: "Thanks! Your message has been received.",
     });
   } catch (err) {

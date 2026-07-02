@@ -68,9 +68,16 @@ const contactItems = [
   },
 ];
 
+type SuccessState = {
+  name: string;
+  recipient: string;
+  mailto: string;
+} | null;
+
 export function Contact() {
   const { toast } = useToast();
   const [submitted, setSubmitted] = React.useState(false);
+  const [success, setSuccess] = React.useState<SuccessState>(null);
 
   const {
     register,
@@ -97,9 +104,14 @@ export function Contact() {
 
       toast({
         title: "Message sent! 🎉",
-        description: `Thanks ${values.name.split(" ")[0]}, I'll get back to you soon.`,
+        description: `Thanks ${values.name.split(" ")[0]}, your message has been delivered.`,
       });
       setSubmitted(true);
+      setSuccess({
+        name: values.name.split(" ")[0],
+        recipient: data.recipient || profile.email,
+        mailto: data.mailto,
+      });
       reset();
       setTimeout(() => setSubmitted(false), 4000);
     } catch (err) {
@@ -197,7 +209,7 @@ export function Contact() {
             </div>
           </motion.div>
 
-          {/* Form */}
+          {/* Form / Success */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -205,93 +217,158 @@ export function Contact() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-7"
           >
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              noValidate
-              className="glass rounded-3xl p-6 sm:p-8"
-            >
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <Field label="Your name" error={errors.name?.message} required>
-                  <Input
-                    id="name"
-                    placeholder="Jane Doe"
-                    autoComplete="name"
-                    {...register("name")}
-                    className="bg-background/60"
-                  />
-                </Field>
-                <Field
-                  label="Email address"
-                  error={errors.email?.message}
-                  required
-                >
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="jane@example.com"
-                    autoComplete="email"
-                    {...register("email")}
-                    className="bg-background/60"
-                  />
-                </Field>
-              </div>
+            {success ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="glass relative overflow-hidden rounded-3xl p-8 sm:p-10"
+              >
+                <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-emerald-400/20 blur-3xl" />
+                <div className="relative">
+                  <motion.div
+                    initial={{ scale: 0, rotate: -30 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
+                    className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-400/15 ring-1 ring-emerald-400/40"
+                  >
+                    <CheckCircle2 className="h-8 w-8 text-emerald-400" />
+                  </motion.div>
 
-              <div className="mt-5">
-                <Field label="Subject" error={errors.subject?.message}>
-                  <Input
-                    id="subject"
-                    placeholder="Project inquiry / collaboration / hiring"
-                    {...register("subject")}
-                    className="bg-background/60"
-                  />
-                </Field>
-              </div>
+                  <h3 className="mt-5 font-display text-2xl font-bold">
+                    Message delivered, {success.name}! 🎉
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Thanks for reaching out. Your message has been saved and a
+                    copy is on its way to{" "}
+                    <span className="font-mono text-emerald-400">
+                      {success.recipient}
+                    </span>
+                    . I&apos;ll reply within 24 hours.
+                  </p>
 
-              <div className="mt-5">
-                <Field
-                  label="Message"
-                  error={errors.message?.message}
-                  required
-                >
-                  <Textarea
-                    id="message"
-                    rows={6}
-                    placeholder="Tell me about your project, timeline, and how I can help…"
-                    {...register("message")}
-                    className="resize-none bg-background/60"
-                  />
-                </Field>
-              </div>
+                  <div className="mt-6 rounded-2xl border border-border/60 bg-card/40 p-4">
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      Prefer to send it from your own inbox?
+                    </p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Tap below to open your email client with the message
+                      pre-filled.
+                    </p>
+                    <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                      <Button asChild className="glow-emerald">
+                        <a href={success.mailto}>
+                          <Mail className="mr-2 h-4 w-4" />
+                          Send via Email
+                        </a>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setSuccess(null)}
+                      >
+                        Send another message
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+                className="glass rounded-3xl p-6 sm:p-8"
+              >
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <Field label="Your name" error={errors.name?.message} required>
+                    <Input
+                      id="name"
+                      placeholder="Jane Doe"
+                      autoComplete="name"
+                      {...register("name")}
+                      className="bg-background/60"
+                    />
+                  </Field>
+                  <Field
+                    label="Email address"
+                    error={errors.email?.message}
+                    required
+                  >
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="jane@example.com"
+                      autoComplete="email"
+                      {...register("email")}
+                      className="bg-background/60"
+                    />
+                  </Field>
+                </div>
 
-              <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
-                <p className="text-xs text-muted-foreground">
-                  By sending, you agree to be contacted about your message.
-                </p>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  size="lg"
-                  className="glow-emerald w-full sm:w-auto"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Sending…
-                    </>
-                  ) : submitted ? (
-                    <>
-                      <CheckCircle2 className="mr-2 h-4 w-4" />
-                      Sent!
-                    </>
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      Send Message
-                    </>
-                  )}
-                </Button>
-              </div>
-            </form>
+                <div className="mt-5">
+                  <Field label="Subject" error={errors.subject?.message}>
+                    <Input
+                      id="subject"
+                      placeholder="Project inquiry / collaboration / hiring"
+                      {...register("subject")}
+                      className="bg-background/60"
+                    />
+                  </Field>
+                </div>
+
+                <div className="mt-5">
+                  <Field
+                    label="Message"
+                    error={errors.message?.message}
+                    required
+                  >
+                    <Textarea
+                      id="message"
+                      rows={6}
+                      placeholder="Tell me about your project, timeline, and how I can help…"
+                      {...register("message")}
+                      className="resize-none bg-background/60"
+                    />
+                  </Field>
+                </div>
+
+                <div className="mt-4 flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
+                  <Mail className="h-3.5 w-3.5 shrink-0 text-primary" />
+                  Messages are delivered to{" "}
+                  <span className="font-mono text-foreground">
+                    {profile.email}
+                  </span>
+                </div>
+
+                <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
+                  <p className="text-xs text-muted-foreground">
+                    By sending, you agree to be contacted about your message.
+                  </p>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    size="lg"
+                    className="glow-emerald w-full sm:w-auto"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Sending…
+                      </>
+                    ) : submitted ? (
+                      <>
+                        <CheckCircle2 className="mr-2 h-4 w-4" />
+                        Sent!
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-4 w-4" />
+                        Send Message
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            )}
           </motion.div>
         </div>
       </div>

@@ -13,7 +13,7 @@ export const profile = {
   twitter: "Kashyap_0702",
   twitterUrl: "https://twitter.com/Kashyap_0702",
   avatarUrl: "https://avatars.githubusercontent.com/u/43714430?v=4",
-  email: "hello@kashyappatel.dev",
+  email: "kashyappatel326@gmail.com",
   // Live GitHub stats (snapshot from api.github.com)
   stats: {
     publicRepos: 12,
