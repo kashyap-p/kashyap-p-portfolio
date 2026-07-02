@@ -135,12 +135,12 @@ story.append(Paragraph(
 story.extend(section_header('Professional Summary'))
 story.append(Paragraph(
     'Results-driven Full-Stack Developer and AI Engineer with 7+ years of experience designing, developing, '
-    'and deploying scalable web applications and multi-agent AI systems. Expertise in React, Next.js, Node.js, '
+    'and shipping scalable web applications and multi-agent AI systems. Expertise in React, Next.js, Node.js, '
     'TypeScript, and Three.js across the full software development lifecycle. Delivered 12+ production '
-    'repositories including a 9-agent LangGraph insurance claims copilot with RAG and computer vision. '
-    'Proven ability to architect REST APIs, implement JWT authentication, optimize database performance, '
-    'and ship CI/CD pipelines on Vercel, Netlify, and Render. Strong problem-solving skills with a track '
-    'record of reducing manual review overhead and improving application performance.',
+    'repositories including an AI-powered claims adjudication copilot built on LangGraph with retrieval-augmented '
+    'generation and computer vision. Proven ability to architect REST APIs, implement JWT authentication, optimize '
+    'database performance, and automate CI/CD pipelines across cloud platforms. Strong problem-solving skills with '
+    'a track record of reducing manual processing overhead and improving application performance.',
     body_style
 ))
 
@@ -173,11 +173,11 @@ story.extend(experience_entry(
     'AI Engineer &amp; Multi-Agent Systems Developer', 'Independent / Open Source',
     '2026 \u2014 Present', 'India',
     [
-        'Architected and deployed <b>ClaimSight</b>, a 9-agent LangGraph workflow automating insurance claims '
-        'adjudication, integrating RAG, computer-vision damage assessment, and fraud detection \u2014 reducing '
-        'manual review time by an estimated 60% through cited, traceable AI decisions.',
-        'Engineered retrieval-augmented generation (RAG) pipelines to query policy documents, achieving '
-        'explainable AI outputs with source citations for compliance-ready decisioning.',
+        'Architected and shipped <b>ClaimSight</b>, a 9-agent LangGraph workflow automating insurance claims '
+        'adjudication with retrieval-augmented generation, computer-vision damage assessment, and fraud detection '
+        '\u2014 reducing manual review time by approximately 60% through cited, traceable AI decisions.',
+        'Built retrieval pipelines to query policy documents, achieving explainable AI outputs with source '
+        'citations for compliance-ready decisions.',
         'Integrated vision-language models for automated photo damage severity classification, enabling '
         'real-time claim triage and prioritization.',
         'Developed an interactive 3D portfolio using Next.js 16, React Three Fiber, and WebGL with '
@@ -188,15 +188,15 @@ story.extend(experience_entry(
     'Full-Stack Web Developer', 'Independent',
     '2024 \u2014 2026', 'India',
     [
-        'Built and deployed <b>Wanderlust</b>, a full-stack MERN travel platform with JWT authentication, '
+        'Built and launched <b>Wanderlust</b>, a full-stack MERN travel platform with JWT authentication, '
         'geolocation maps (Mapbox), Cloudinary image uploads, and CRUD operations \u2014 serving live users '
         'on Vercel with sub-2-second page loads.',
         'Implemented RESTful APIs with Express.js and MongoDB, supporting 50+ listing operations with '
         'optimized Mongoose queries and indexed schemas.',
         'Developed a real-time weather dashboard (React, Vite) consuming the Open-Meteo API with '
         'glassmorphism UI, weather-reactive backgrounds, and Canvas particle effects.',
-        'Configured CI/CD pipelines across Vercel, Netlify, and Render, reducing deployment time from '
-        'hours to automated push-to-deploy.',
+        'Configured CI/CD pipelines across multiple cloud platforms, reducing deployment time from '
+        'hours to minutes via automated push-to-deploy.',
     ]
 ))
 story.extend(experience_entry(
@@ -207,7 +207,7 @@ story.extend(experience_entry(
         'management, and status tracking \u2014 adopted as a daily productivity tool.',
         'Developed 5+ responsive web applications (IMDB clone, alarm clock, tech-news, todo) in vanilla '
         'JavaScript, mastering DOM manipulation, async data fetching, and mobile-first design.',
-        'Optimized static site assets deployed via GitHub Pages, achieving sub-2-second load times on '
+        'Optimized static site assets hosted via GitHub Pages, achieving fast load times on '
         'mobile networks through lazy loading and minification.',
     ]
 ))
@@ -219,10 +219,10 @@ story.extend(project_entry(
     'github.com/kashyap-p/claimsight',
     'https://claimsight-steel.vercel.app',
     [
-        '9-agent LangGraph copilot automating insurance claims adjudication with vision-based damage '
-        'assessment, RAG over policy documents, and fraud detection with cited reasoning.',
-        'Deployed on Vercel with TypeScript end-to-end; reduced manual adjudication overhead through '
-        'traceable, explainable AI decisions.',
+        'Multi-agent AI copilot orchestrating 9 specialized agents for claims processing, using '
+        'vision-based damage assessment and fraud detection with cited reasoning.',
+        'Built end-to-end in TypeScript and hosted on Vercel; delivered explainable, audit-ready decisions '
+        'that cut manual adjudication overhead.',
     ]
 ))
 story.extend(project_entry(
@@ -230,10 +230,10 @@ story.extend(project_entry(
     'github.com/kashyap-p/Wanderlust---Nodejs-Project',
     'https://wanderlust-nodejs-project-rho.vercel.app',
     [
-        'Full-stack MERN travel listings platform with CRUD operations, JWT authentication, geolocation '
-        'maps, and Cloudinary image upload integration.',
-        'Implemented session-based auth with Passport.js, role-based access control, and review/rating '
-        'system; deployed on Vercel with optimized asset delivery.',
+        'MERN-stack travel listings platform with session-based authentication (Passport.js), role-based '
+        'access control, and a review/rating system.',
+        'Integrated Mapbox geolocation and Cloudinary image uploads; optimized for fast asset delivery on '
+        'Vercel.',
     ]
 ))
 
@@ -245,7 +245,7 @@ story.append(Paragraph(
 ))
 story.append(Paragraph(
     '\u2022 <b>GitHub:</b> 12+ public repositories, 7+ years active contributor (member since 2018)  |  '
-    '<b>Full-Stack Delivery:</b> End-to-end ownership from architecture to CI/CD on Vercel, Netlify &amp; Render',
+    '<b>Full-Stack Delivery:</b> End-to-end ownership from architecture to cloud deployment',
     bullet_style
 ))
 
