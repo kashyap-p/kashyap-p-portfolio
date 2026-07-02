@@ -44,35 +44,35 @@ const contactItems = [
     label: "Email",
     value: profile.email,
     href: `mailto:${profile.email}`,
-    color: "text-emerald-400",
+    color: "text-emerald-600 dark:text-emerald-400",
   },
   {
     icon: Github,
     label: "GitHub",
     value: `@${profile.githubUsername}`,
     href: profile.githubUrl,
-    color: "text-amber-400",
+    color: "text-amber-600 dark:text-amber-400",
   },
   {
     icon: Linkedin,
     label: "LinkedIn",
     value: "in/kashyap-p",
     href: profile.linkedinUrl,
-    color: "text-sky-400",
+    color: "text-sky-600 dark:text-sky-400",
   },
   {
     icon: Twitter,
     label: "Twitter",
     value: `@${profile.twitter}`,
     href: profile.twitterUrl,
-    color: "text-pink-400",
+    color: "text-pink-600 dark:text-pink-400",
   },
   {
     icon: MapPin,
     label: "Location",
     value: profile.location,
     href: undefined,
-    color: "text-teal-400",
+    color: "text-teal-600 dark:text-teal-400",
   },
 ];
 
@@ -156,10 +156,10 @@ export function Contact() {
             className="lg:col-span-5"
           >
             <div className="glass h-full rounded-3xl p-6 sm:p-8">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-600/30 bg-emerald-600/10 px-3 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-300">
                 <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-600 opacity-75 dark:bg-emerald-400" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600 dark:bg-emerald-400" />
                 </span>
                 Available for new opportunities
               </div>
@@ -232,15 +232,15 @@ export function Contact() {
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="glass relative overflow-hidden rounded-3xl p-8 sm:p-10"
               >
-                <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-emerald-400/20 blur-3xl" />
+                <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-emerald-600/20 blur-3xl dark:bg-emerald-400/20" />
                 <div className="relative">
                   <motion.div
                     initial={{ scale: 0, rotate: -30 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
-                    className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-400/15 ring-1 ring-emerald-400/40"
+                    className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-600/15 ring-1 ring-emerald-600/40 dark:bg-emerald-400/15 dark:ring-emerald-400/40"
                   >
-                    <CheckCircle2 className="h-8 w-8 text-emerald-400" />
+                    <CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
                   </motion.div>
 
                   <h3 className="mt-5 font-display text-2xl font-bold">
@@ -249,7 +249,7 @@ export function Contact() {
                   <p className="mt-2 text-sm text-muted-foreground">
                     Thanks for reaching out. Your message has been saved and a
                     copy is on its way to{" "}
-                    <span className="font-mono text-emerald-400">
+                    <span className="font-mono text-emerald-700 dark:text-emerald-400">
                       {success.recipient}
                     </span>
                     . I&apos;ll reply within 24 hours.
