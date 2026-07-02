@@ -67,9 +67,9 @@ type PublicRepoSummary = {
 // dynamic "Other repositories" list to avoid duplication.
 const FEATURED_REPO_NAMES = new Set([
   "claimsight",
+  "Wanderlust---Nodejs-Project",
   "weather-tracker",
   "tech-news",
-  "todo-app",
 ]);
 
 function humanizeTitle(name: string): string {
