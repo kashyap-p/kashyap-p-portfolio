@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SectionHeading } from "@/components/section-heading";
+import { SectionHeading } from "@/components/shared/section-heading";
 import { skills } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
 

@@ -12,8 +12,8 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
-import { SectionHeading } from "@/components/section-heading";
-import { TiltCard } from "@/components/tilt-card";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { TiltCard } from "@/components/shared/tilt-card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { projects, type Project } from "@/lib/portfolio-data";

@@ -17,7 +17,7 @@ import {
   Clock,
   ArrowUpRight,
 } from "lucide-react";
-import { SectionHeading } from "@/components/section-heading";
+import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

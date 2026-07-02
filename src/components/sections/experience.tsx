@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Briefcase } from "lucide-react";
-import { SectionHeading } from "@/components/section-heading";
+import { SectionHeading } from "@/components/shared/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { timeline } from "@/lib/portfolio-data";
 

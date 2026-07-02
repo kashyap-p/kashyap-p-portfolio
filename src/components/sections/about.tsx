@@ -12,8 +12,8 @@ import {
   MapPin,
   Briefcase,
 } from "lucide-react";
-import { SectionHeading } from "@/components/section-heading";
-import { CountUp } from "@/components/count-up";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { CountUp } from "@/components/shared/count-up";
 import { profile } from "@/lib/portfolio-data";
 
 const whatIDo = [

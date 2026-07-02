@@ -12,7 +12,7 @@ import {
   SheetTitle,
   SheetClose,
 } from "@/components/ui/sheet";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { navLinks, profile } from "@/lib/portfolio-data";
 import {
   useActiveSection,
