@@ -52,3 +52,16 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Local SQLite database (regenerated via `bun run db:push`)
+db/*.db
+db/*.db-journal
+
+# Sandbox / dev-environment only (not part of the portfolio)
+/.zscripts/
+/Caddyfile
+/examples/
+/mini-services/
+/download/
+/upload/
+worklog.md
