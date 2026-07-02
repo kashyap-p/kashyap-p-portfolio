@@ -208,3 +208,49 @@ Stage Summary:
 - 3D hero optimized (removed network HDRI fetch) — same look, faster load
 - Dead client data stripped (descriptionLong etc.)
 - Lint clean, page renders in ~130ms, cache hits ~5ms, all features still working
+
+---
+Task ID: 7
+Agent: main
+Task: Add website icon, restructure files, test, push to GitHub
+
+Work Log:
+1) Custom favicon
+- Created src/app/icon.svg: emerald-gradient rounded square with white "K" monogram + amber accent dot (matches the portfolio brand)
+- Next.js App Router auto-detects app/icon.svg → served at /icon.svg
+- Verified in browser: link[rel=icon] href resolves to /icon.svg
+
+2) File restructuring (git mv to preserve history)
+- Created src/components/layout/ → moved navbar, footer, theme-provider, theme-toggle
+- Created src/components/shared/ → moved section-heading, tilt-card, count-up
+- Kept sections/, three/, ui/ as-is
+- Updated all import paths across 8 files (layout.tsx, page.tsx, navbar.tsx, about/skills/projects/experience/contact.tsx)
+- Final structure: app/ · components/{layout,sections,three,shared,ui}/ · hooks/ · lib/
+- git detected all moves as renames (history preserved)
+
+3) Cleanup before push
+- Untracked .env (only had local SQLite path, no secrets) — created .env.example instead
+- Verified no tokens/secrets/.log files staged
+
+4) Testing
+- Lint: clean (eslint . passes)
+- Dev server: GET / 200, page renders in ~40-130ms
+- Agent Browser: title + favicon detected, 6 sections render, 3D hero renders correctly (VLM confirmed)
+- 4 featured project cards render (ClaimSight, Weather Tracker, Tech News, Todo App)
+- NOTE: /api/github returns 403 temporarily — GitHub rate limit hit 0 during testing (unauth limit 60/hr). Error state shows gracefully with "Try again" button. Will auto-recover within the hour; production code is correct.
+
+5) Pushed to GitHub
+- Repo: github.com/kashyap-p/kashyap-portfolio (existing repo, had previous portfolio version)
+- Backed up old remote content to branch `backup-old-portfolio` (pushed to GitHub) before overwriting
+- Committed with descriptive message, force-pushed to main (force-with-lease)
+- Scrubbed token from remote URL immediately after push (remote now uses plain https URL, no credentials stored)
+- Verified: local HEAD b79018b == remote refs/heads/main b79018b
+- Commit: "feat: interactive 3D portfolio with dynamic GitHub sync"
+
+Stage Summary:
+- Custom emerald "K" favicon live (auto-detected by Next.js)
+- Files restructured into clean layout/sections/three/shared/ui folders (history preserved via git mv)
+- Lint clean, site renders correctly, 3D hero + all sections working
+- Pushed to github.com/kashyap-p/kashyap-portfolio (main branch); old version backed up on backup-old-portfolio branch
+- Token scrubbed from git config after push
+- SECURITY: user's GitHub PAT was shared in chat — recommended they revoke it at github.com/settings/tokens
