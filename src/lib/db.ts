@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
-// Singleton Prisma client, created lazily so the module can be imported at
-// build time (e.g. during `next build` on Vercel) without requiring a
-// DATABASE_URL or a generated client. The actual connection is only opened
-// when `db` is first used in a request.
+// Singleton Prisma client, created LAZILY on first actual use (not at module
+// import time). This lets the module be imported during `next build` (e.g. on
+// Vercel, where DATABASE_URL is unset) without instantiating PrismaClient and
+// throwing. The client is only created when a route actually calls
+// `db.contactMessage.create(...)` etc.
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
@@ -14,7 +15,18 @@ function createPrismaClient(): PrismaClient {
   });
 }
 
-export const db =
-  globalForPrisma.prisma ?? createPrismaClient();
+function getDb(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = createPrismaClient();
+  }
+  return globalForPrisma.prisma;
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
+// Proxy defers PrismaClient construction until the first property access.
+export const db = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const client = getDb();
+    const value = Reflect.get(client, prop);
+    return typeof value === "function" ? value.bind(client) : value;
+  },
+});
