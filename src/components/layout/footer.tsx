@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Twitter, Linkedin, ArrowUp, Sparkles, Heart } from "lucide-react";
+import { Github, Linkedin, ArrowUp, Sparkles, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { profile, navLinks } from "@/lib/portfolio-data";
 
@@ -47,16 +47,6 @@ export function Footer() {
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="h-[1.05rem] w-[1.05rem]" />
-                </a>
-              </Button>
-              <Button asChild variant="ghost" size="icon" className="h-9 w-9 rounded-full">
-                <a
-                  href={profile.twitterUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Twitter"
-                >
-                  <Twitter className="h-[1.05rem] w-[1.05rem]" />
                 </a>
               </Button>
             </div>

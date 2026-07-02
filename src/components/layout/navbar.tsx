@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Menu, Github, Twitter, Linkedin, X, Sparkles } from "lucide-react";
+import { Menu, Github, Linkedin, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -110,21 +110,6 @@ export function Navbar() {
             className="hidden h-9 w-9 rounded-full sm:inline-flex"
           >
             <a
-              href={profile.twitterUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter"
-            >
-              <Twitter className="h-[1.05rem] w-[1.05rem]" />
-            </a>
-          </Button>
-          <Button
-            asChild
-            variant="ghost"
-            size="icon"
-            className="hidden h-9 w-9 rounded-full sm:inline-flex"
-          >
-            <a
               href={profile.linkedinUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -174,7 +159,7 @@ export function Navbar() {
                   </SheetClose>
                 ))}
                 <div className="mt-6 grid grid-cols-2 gap-2">
-                  <Button asChild variant="outline">
+                  <Button asChild variant="outline" className="col-span-2">
                     <a
                       href={profile.githubUrl}
                       target="_blank"
@@ -183,22 +168,13 @@ export function Navbar() {
                       <Github className="mr-2 h-4 w-4" /> GitHub
                     </a>
                   </Button>
-                  <Button asChild variant="outline">
+                  <Button asChild variant="outline" className="col-span-2">
                     <a
                       href={profile.linkedinUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <Linkedin className="mr-2 h-4 w-4" /> LinkedIn
-                    </a>
-                  </Button>
-                  <Button asChild variant="outline" className="col-span-2">
-                    <a
-                      href={profile.twitterUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Twitter className="mr-2 h-4 w-4" /> Twitter
                     </a>
                   </Button>
                 </div>

@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import {
   ArrowDown,
   Github,
-  Twitter,
   Linkedin,
   Sparkles,
   Code2,
@@ -132,16 +131,6 @@ export function Hero() {
                   aria-label="LinkedIn profile"
                 >
                   <Linkedin className="h-5 w-5" />
-                </a>
-              </Button>
-              <Button asChild size="icon" variant="ghost" className="h-10 w-10 sm:h-11 sm:w-11">
-                <a
-                  href={profile.twitterUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Twitter profile"
-                >
-                  <Twitter className="h-5 w-5" />
                 </a>
               </Button>
             </span>

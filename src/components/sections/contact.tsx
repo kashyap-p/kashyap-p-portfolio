@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 import {
   Mail,
   Github,
-  Twitter,
   Linkedin,
   MapPin,
   Send,
@@ -59,13 +58,6 @@ const contactItems = [
     value: "in/kashyap-p",
     href: profile.linkedinUrl,
     color: "text-sky-600 dark:text-sky-400",
-  },
-  {
-    icon: Twitter,
-    label: "Twitter",
-    value: `@${profile.twitter}`,
-    href: profile.twitterUrl,
-    color: "text-pink-600 dark:text-pink-400",
   },
   {
     icon: MapPin,

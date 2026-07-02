@@ -9,8 +9,6 @@ export const profile = {
   hireable: true,
   githubUsername: "kashyap-p",
   githubUrl: "https://github.com/kashyap-p",
-  twitter: "Kashyap_0702",
-  twitterUrl: "https://twitter.com/Kashyap_0702",
   linkedinUrl: "https://www.linkedin.com/in/kashyap-p",
   avatarUrl: "https://avatars.githubusercontent.com/u/43714430?v=4",
   email: "kashyappatel326@gmail.com",

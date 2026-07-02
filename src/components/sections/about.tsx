@@ -7,7 +7,6 @@ import {
   Layout,
   Brain,
   Github,
-  Twitter,
   Linkedin,
   MapPin,
   Briefcase,
@@ -114,7 +113,7 @@ export function About() {
                     href={profile.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 rounded-xl border border-border/60 bg-card/50 px-3 py-2.5 text-sm font-medium transition-colors hover:border-primary/40 hover:bg-primary/10"
+                    className="col-span-2 flex items-center justify-center gap-2 rounded-xl border border-border/60 bg-card/50 px-3 py-2.5 text-sm font-medium transition-colors hover:border-primary/40 hover:bg-primary/10"
                   >
                     <Github className="h-4 w-4" /> GitHub
                   </a>
@@ -122,17 +121,9 @@ export function About() {
                     href={profile.linkedinUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 rounded-xl border border-border/60 bg-card/50 px-3 py-2.5 text-sm font-medium transition-colors hover:border-primary/40 hover:bg-primary/10"
-                  >
-                    <Linkedin className="h-4 w-4" /> LinkedIn
-                  </a>
-                  <a
-                    href={profile.twitterUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="col-span-2 flex items-center justify-center gap-2 rounded-xl border border-border/60 bg-card/50 px-3 py-2.5 text-sm font-medium transition-colors hover:border-primary/40 hover:bg-primary/10"
                   >
-                    <Twitter className="h-4 w-4" /> Twitter
+                    <Linkedin className="h-4 w-4" /> LinkedIn
                   </a>
                 </div>
               </div>

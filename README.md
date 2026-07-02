@@ -13,7 +13,7 @@ Live demo: [kashyap-port-folio.vercel.app](https://kashyap-port-folio.vercel.app
 - **Sections** — Hero, About (animated count-up stats), Skills (animated bars + tech marquee), Projects (4 featured tilt cards + dynamic repo list), Experience timeline, Contact form
 - **Working contact form** — validated with Zod, persisted to SQLite via Prisma, with a `mailto:` fallback that delivers to `kashyappatel326@gmail.com`
 - **Responsive** — mobile-first, sticky footer, dark/light theme toggle
-- **Socials** — GitHub, LinkedIn, Twitter wired across navbar, hero, about, contact, footer
+- **Socials** — GitHub and LinkedIn wired across navbar, hero, about, contact, footer
 
 ---
 

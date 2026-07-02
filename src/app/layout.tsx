@@ -41,12 +41,6 @@ export const metadata: Metadata = {
       "Interactive 3D portfolio of Kashyap Patel, full-stack developer.",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Kashyap Patel — Full-Stack Developer",
-    description:
-      "Interactive 3D portfolio of Kashyap Patel, full-stack developer.",
-  },
 };
 
 export default function RootLayout({
