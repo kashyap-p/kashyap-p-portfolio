@@ -96,7 +96,7 @@ export const projects: Project[] = [
     description:
       "Static tech-news demo site built with plain HTML, CSS and JavaScript.",
     tags: ["HTML", "CSS", "JavaScript", "Responsive"],
-    liveUrl: "https://kashyap-p.github.io/tech-news/",
+    liveUrl: "https://tech-news-nine-amber.vercel.app/",
     repoUrl: "https://github.com/kashyap-p/tech-news",
     accent: "pink",
     highlights: [
