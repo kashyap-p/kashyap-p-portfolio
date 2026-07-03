@@ -13,8 +13,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { profile } from "@/lib/portfolio-data";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileHeroBackground } from "@/components/three/mobile-hero-bg";
 
-// Load the 3D canvas only on the client
+// Load the 3D canvas only on the client (desktop only — mobile uses CSS bg)
 const HeroScene = dynamic(
   () => import("@/components/three/hero-scene").then((m) => m.HeroScene),
   {
@@ -40,12 +42,14 @@ const item = {
 };
 
 export function Hero() {
+  const isMobile = useIsMobile();
+
   return (
     <section
       id="home"
       className="relative flex min-h-screen items-center overflow-hidden pt-16"
     >
-      {/* Aurora background blobs */}
+      {/* Aurora background blobs (always present, cheap) */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -left-32 top-10 h-96 w-96 rounded-full bg-primary/25 blur-[120px]" />
         <div className="absolute right-0 top-1/3 h-[28rem] w-[28rem] rounded-full bg-accent/20 blur-[130px]" />
@@ -53,10 +57,14 @@ export function Hero() {
         <div className="absolute inset-0 bg-grid opacity-60" />
       </div>
 
-      {/* 3D scene — receives pointer events for mouse-parallax */}
-      <div className="absolute inset-0 -z-10">
-        <HeroScene />
-      </div>
+      {/* 3D scene on desktop, lightweight CSS background on mobile */}
+      {isMobile ? (
+        <MobileHeroBackground />
+      ) : (
+        <div className="absolute inset-0 -z-10">
+          <HeroScene />
+        </div>
+      )}
 
       {/* Content — pass-through so pointer events reach the 3D canvas,
           except interactive elements which opt back in */}

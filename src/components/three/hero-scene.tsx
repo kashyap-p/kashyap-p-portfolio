@@ -42,7 +42,7 @@ function CoreBlob() {
 
       {/* Distorted glowing core */}
       <mesh ref={inner}>
-        <icosahedronGeometry args={[1.15, 6]} />
+        <icosahedronGeometry args={[1.15, 4]} />
         <MeshDistortMaterial
           color="#10b981"
           emissive="#047857"
@@ -222,7 +222,7 @@ function SceneContents() {
       </MouseParallax>
 
       <Sparkles
-        count={120}
+        count={60}
         scale={[12, 8, 8]}
         size={2.2}
         speed={0.35}
@@ -230,7 +230,7 @@ function SceneContents() {
         color="#5eead4"
       />
       <Sparkles
-        count={40}
+        count={20}
         scale={[10, 7, 6]}
         size={3.5}
         speed={0.25}
@@ -245,7 +245,7 @@ export function HeroScene() {
   return (
     <Canvas
       camera={{ position: [0, 0, 6.2], fov: 45 }}
-      dpr={[1, 2]}
+      dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       style={{ background: "transparent" }}
     >
