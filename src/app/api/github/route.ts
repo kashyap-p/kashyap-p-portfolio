@@ -68,7 +68,7 @@ type PublicRepoSummary = {
 const FEATURED_REPO_NAMES = new Set([
   "claimsight",
   "Wanderlust---Nodejs-Project",
-  "weather-tracker",
+  "photowala-bayad",
   "tech-news",
 ]);
 
